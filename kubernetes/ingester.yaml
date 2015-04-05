@@ -1,0 +1,19 @@
+id: ingester
+kind: Pod
+apiVersion: v1beta1
+desiredState:
+  manifest:
+    version: v1beta1
+    id: ingester
+    containers:
+      - name: ingester
+        image: 172.17.8.101:5001/ingester
+        #command:
+        #  - /run.sh
+        cpu: 1000
+    volumes:
+      - name: data
+        source:
+          emptyDir: {}
+labels:
+  name: ingester
