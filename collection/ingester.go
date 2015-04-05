@@ -42,15 +42,6 @@ func parseSensors(body []byte) []Sensor {
 	return (sensors)
 }
 
-/*
-func dbInsert(readout string) {
-	if err := session.Query(`INSERT INTO sensor_states (weatherstation_id,event_time,state) VALUES (?, ?, ?)`,
-          "1234ABCD", time.Now(), "73F").Exec(); err != nil {
-          log.Fatal(err)
-       }
-}
-*/
-
 func main() {
 	// connect to the cluster
 	endpoints := getEndpoints("cassandra")
@@ -131,4 +122,3 @@ func main() {
 	log.Printf(" [*] Waiting for logs. To exit press CTRL+C")
 	<-forever
 }
-
