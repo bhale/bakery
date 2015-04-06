@@ -48,17 +48,6 @@ type Sensors struct {
 	Sensors []Sensor `json:"sensors"`
 }
 
-func SensorHandler(rw http.ResponseWriter, r *http.Request) {
-
-	sensor := Sensor{}
-
-	q := session.Query(`SELECT sensor_id, state, event_time FROM sensor_states LIMIT 1`)
-	q.Scan(&sensor.SensorId, &sensor.State, &sensor.EventTime)
-
-	js, _ := json.Marshal(sensor)
-	rw.Write(js)
-}
-
 func SensorsHandler(rw http.ResponseWriter, r *http.Request) {
 
 	sensors := make([]Sensor, 0)
