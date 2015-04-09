@@ -34,9 +34,9 @@ func main() {
 
 	// Aggregators to poll
 
-	aggregators := []string{"172.17.8.101:9005", "172.17.8.101:9004", "172.17.8.101:9003", "172.17.8.101:9002", "172.17.8.101:9001", "172.17.8.101:9000"}
+	aggregators := []string{"192.168.1.101:9000", "192.168.1.101:9001", "192.168.1.101:9002", "192.168.1.101:9003", "192.168.1.101:9004", "192.168.1.101:9005", "192.168.1.101:9006", "192.168.1.101:9007", "192.168.1.101:9008", "192.168.1.101:9009"}
 
-	rabbitHost := "amqp://guest:guest@172.17.8.102:5672/"
+	rabbitHost := "amqp://guest:guest@10.100.49.105:5672/"
 
 	conn, err := amqp.Dial(rabbitHost)
 	failOnError(err, "Failed to connect to RabbitMQ")
@@ -46,34 +46,23 @@ func main() {
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
-	err = ch.ExchangeDeclare(
-		"logs",   // name
-		"fanout", // type
-		true,     // durable
-		false,    // auto-deleted
-		false,    // internal
-		false,    // no-wait
-		nil,      // arguments
-	)
-	failOnError(err, "Failed to declare an exchange")
-
 	for _, aggregator := range aggregators {
 
 		body := getSensors(aggregator)
 		log.Println("Starting on " + aggregator)
 
 		err = ch.Publish(
-			"logs", // exchange
-			"",     // routing key
-			false,  // mandatory
-			false,  // immediate
+			"",                // exchange
+			"ingestion_queue", // routing key
+			false,             // mandatory
+			false,             // immediate
 			amqp.Publishing{
-				ContentType: "text/plain",
-				Body:        []byte(body),
+				DeliveryMode: amqp.Persistent,
+				ContentType:  "text/plain",
+				Body:         []byte(body),
 			})
 		failOnError(err, "Failed to publish a message")
 
 		//log.Printf(" [x] Sent %s", body)
 	}
 }
-
