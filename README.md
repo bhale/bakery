@@ -25,7 +25,7 @@ and start a RabbitMQ container.
 #### SQL setup
 
 ```
-CREATE KEYSPACE bakery WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
+CREATE KEYSPACE bakery WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3'}  AND durable_writes = true;
 
 CREATE TABLE bakery.sensor_states (
     sensor_id text,
