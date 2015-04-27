@@ -6,6 +6,11 @@ data to Cassandra (and Apache Spark?)
 
 The Bakery is managed by head pasty chef Kubernetes.
 
+## TODO
+
+Create Collection containers to support gathering sensor data from XMPP, ModBus, BacNet.
+Create a hardware gateway to expose legacy sensors to the network (BeagleBone?)
+
 ## Running the Bakery
 
 #### Creating a CoreOS / Kubernetes Cluster
